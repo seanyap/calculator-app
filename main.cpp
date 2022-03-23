@@ -59,6 +59,15 @@ struct Calculator {
     int idx = 0, size = input.length();
     string operand1, operand2;
     char op;
+    // process special square root case which only has operator first then operand
+    if (input[idx] == 'r') {
+      if (size < 1)
+        throw "square root operand not found";
+      idx++;
+      operand1 = findNum(input, idx);
+      return evaluate(stod(operand1), -1, 'r');
+    }
+
     if (!isdigit(input[idx])) 
       throw "1st operand not found";
     operand1 = findNum(input, idx);  
