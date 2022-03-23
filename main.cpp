@@ -2,19 +2,17 @@
 #include <string>
 #include <cmath>
 #include <unordered_set>
-#include <stack>
 using namespace std;
 
 struct Calculator {
-  unordered_set<string> validOp = {"+", "-", "*", "/", "^", "^^", "(", ")", "."};
+  unordered_set<char> validOp = {'+', '-', '*', '/', '^', 'r'};
   enum opname {ADD, SUB, MUL, DIV, POWER, SQRT};
 
   // allow nums from 0-9, operators, parenthesis  
   int checkValidValues(string input) {
     for (int i=0; i<input.length(); i++) {
       char c = input[i];
-      string c_str = string(1, c);
-      if (!isdigit(c) && validOp.find(c_str) == validOp.end()) {
+      if (!isdigit(c) && validOp.find(c) == validOp.end() && c != '.') {
         return 0;
       }
     }
@@ -33,8 +31,7 @@ struct Calculator {
         return operand1 * operand2;
         break;
       case DIV:
-        if (operand2 == 0)
-          // throw division by zero error
+        if (operand2 == 0) throw "Division by zero error.";
         return operand1 / operand2;
         break;
       case POWER:
@@ -45,30 +42,34 @@ struct Calculator {
         break;
       default:
         // invalid precaution
+        throw "Invalid values";
     }
   }
 
-  string run(string input) {
-    stack<float> operands;
-    stack<string> operators;
-    for (int i=0; i<input.length(); i++) {
-      if (input[i] == ' ') continue;
-      // loop all values that belong to the same value 
-    }
+  double run(string input) {
+    int size = input.length();
 
-    return input;
+    for (int i=0; i<size; i++) {
+    }
   }
 };
 
 int main() {
   Calculator calc;
   string s;
-  cout << "Enter a mathematical expression\n";
+  cout << "Enter a mathematical expression:\n";
   cin >> s;
   while (!calc.checkValidValues(s)) { // throw invalid expression error
     cout << "Invalid syntax\n";
-    cout << "Enter a valid mathematical expression\n";
+    cout << "Enter a valid mathematical expression:\n";
     cin >> s;
   }
-  cout << calc.run(s) << "\n";
+  string result;
+  try {
+    result = to_string(calc.run(s));
+  } catch (string error) {
+    cout << error << "\n";
+  }
+
+  cout << result << "\n";
 }
