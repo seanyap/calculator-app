@@ -3,6 +3,7 @@
 #include <cmath>
 #include <unordered_set>
 #include <iomanip> 
+#include <fstream>
 using namespace std;
 
 struct Calculator {
@@ -88,6 +89,8 @@ struct Calculator {
 int main() {
   Calculator calc;
   string s;
+
+  // getting values from user
   cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
   cin >> s;
   while (!calc.checkValidValues(s)) { // throw invalid expression error
@@ -101,5 +104,20 @@ int main() {
     cout << "-> Error message: " << msg;
   }
   cout << fixed << setprecision(3) << result << endl;
+
+  // processing values from input file
+  // ifstream inputFile;
+  // inputFile.open("./data/test_data.txt");
+  // ofstream outputFile;
+  // outputFile.open ("./report/result.txt");
+
+  // string line;
+  // while (getline(inputFile, line)) {
+  //   string result = to_string(calc.run(line));
+  //   outputFile << result << '\n';
+  // }
+  // inputFile.close();
+  // outputFile.close();
+
   return 0;
 }
