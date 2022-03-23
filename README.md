@@ -1,0 +1,5 @@
+# calculator-app
+
+This is a small command line program I wrote to imitate some common functionalities of a calculator. It can perform 6 operations: addition, subtraction, multiplication, division, exponentiation, and finding the square root of a number. When the program is run, it asks user to input a mathematical expression in the format of a+b where the operator is in between the two operants, with the exception of square rooting which has only one operand. The program performs some exception handling such as division by zero and invalid syntax expression. 
+
+I used a set data structure to store the operators that the program support to provide fast lookup time when it checks to see if a particular symbol belongs to a supported operator or otherwise. I also attempted to break down my code into smaller functional units, namely a function that is only responsible for running the calculator, and other utility functions such as one whose responsibility is solely on processing user input to find for all the digits that make up the first and second operand and the operator in between and another to perform a basic operation like addition and subtraction. 
