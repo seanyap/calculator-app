@@ -2,13 +2,14 @@
 #include <string>
 #include <cmath>
 #include <unordered_set>
+#include <iomanip> 
 using namespace std;
 
 struct Calculator {
   unordered_set<char> validOp = {'+', '-', '*', '/', '^', 'r'};
   enum opname {ADD, SUB, MUL, DIV, POWER, SQRT};
 
-  // allow nums from 0-9, operators, parenthesis  
+  // allow nums from 0-9 and operator without spacing in between
   int checkValidValues(string input) {
     for (int i=0; i<input.length(); i++) {
       char c = input[i];
@@ -19,57 +20,77 @@ struct Calculator {
     return 1;
   }
 
-  double evaluate(double operand1, double operand2, opname op) {
+  double evaluate(double operand1, double operand2, char op) {
     switch (op) {
-      case ADD:
+      case '+':
         return operand1 + operand2;
         break;
-      case SUB:
+      case '-':
         return operand1 - operand2;
         break;
-      case MUL:
+      case '*':
         return operand1 * operand2;
         break;
-      case DIV:
+      case '/':
         if (operand2 == 0) throw "Division by zero error.";
         return operand1 / operand2;
         break;
-      case POWER:
+      case '^':
         return pow(operand1,operand2);
         break;
-      case SQRT:
+      case 'r':
         return sqrt(operand1);
         break;
       default:
-        // invalid precaution
-        throw "Invalid values";
+        throw "invalid operator";
     }
   }
 
-  double run(string input) {
-    int size = input.length();
-
-    for (int i=0; i<size; i++) {
+  string findNum(string input, int& idx) {
+    string num;
+    while (isdigit(input[idx]) || input[idx] == '.') {
+      num += input[idx];
+      idx++;
     }
+    return num;
+  }
+
+  double run(string input) {
+    int idx = 0, size = input.length();
+    string operand1, operand2;
+    char op;
+    if (!isdigit(input[idx])) 
+      throw "1st operand not found";
+    operand1 = findNum(input, idx);  
+    
+    if (idx >= size || validOp.find(input[idx])==validOp.end())
+      throw "operator not found";
+    op = input[idx];
+    idx++;
+
+    if (idx >= size || !isdigit(input[idx])) 
+      throw "2nd operand not found";
+    operand2 = findNum(input, idx); 
+
+    return evaluate(stod(operand1), stod(operand2), op);
   }
 };
 
 int main() {
   Calculator calc;
   string s;
-  cout << "Enter a mathematical expression:\n";
+  cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
   cin >> s;
   while (!calc.checkValidValues(s)) { // throw invalid expression error
-    cout << "Invalid syntax\n";
-    cout << "Enter a valid mathematical expression:\n";
+    cout << "Invalid syntax. Try again: \n";
     cin >> s;
   }
   string result;
   try {
     result = to_string(calc.run(s));
-  } catch (string error) {
-    cout << error << "\n";
+  } catch (const char* msg) {
+    cout << "-> Error message: " << msg;
   }
-
-  cout << result << "\n";
+  cout << fixed << setprecision(3) << result << endl;
+  return 0;
 }
