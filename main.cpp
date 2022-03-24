@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <cmath>
+#include <math.h>
 #include <unordered_set>
 #include <iomanip> 
 #include <fstream>
@@ -33,7 +33,7 @@ struct Calculator {
         return operand1 * operand2;
         break;
       case '/':
-        if (operand2 == 0) throw "Division by zero error.";
+        if (int(operand2) == 0) throw "Division by zero error.";
         return operand1 / operand2;
         break;
       case '^':
@@ -66,7 +66,7 @@ struct Calculator {
         throw "square root operand not found";
       idx++;
       operand1 = findNum(input, idx);
-      return evaluate(stod(operand1), -1, 'r');
+      return evaluate(stod(operand1), -1.0, 'r');
     }
 
     if (!isdigit(input[idx])) 
@@ -91,33 +91,39 @@ int main() {
   string s;
 
   // getting values from user
-  cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
-  cin >> s;
-  while (!calc.checkValidValues(s)) { // throw invalid expression error
-    cout << "Invalid syntax. Try again: \n";
-    cin >> s;
-  }
-  string result;
-  try {
-    result = to_string(calc.run(s));
-  } catch (const char* msg) {
-    cout << "-> Error message: " << msg;
-  }
-  cout << fixed << setprecision(3) << result << endl;
+  // cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
+  // cin >> s;
+  // while (!calc.checkValidValues(s)) { // throw invalid expression error
+  //   cout << "Invalid syntax. Try again: \n";
+  //   cin >> s;
+  // }
+  // string result;
+  // try {
+  //   result = to_string(calc.run(s));
+  // } catch (const char* msg) {
+  //   cout << "-> Error message: " << msg;
+  // }
+  // cout << fixed << setprecision(3) << result << endl;
 
   // processing values from input file
-  // ifstream inputFile;
-  // inputFile.open("./data/test_data.txt");
-  // ofstream outputFile;
-  // outputFile.open ("./report/result.txt");
+  ifstream inputFile;
+  inputFile.open("./data/test_data.txt");
+  ofstream outputFile;
+  outputFile.open ("./report/result.txt");
 
-  // string line;
-  // while (getline(inputFile, line)) {
-  //   string result = to_string(calc.run(line));
-  //   outputFile << result << '\n';
-  // }
-  // inputFile.close();
-  // outputFile.close();
+  string line;
+  while (getline(inputFile, line)) {
+    try {
+      if (!calc.checkValidValues(line)) 
+        throw "Invalid syntax";
+      string result = to_string(calc.run(line));
+      outputFile << result << '\n';
+    } catch (const char* msg) {
+      outputFile << "-> error message: " << msg << "\n";
+    }
+  }
+  inputFile.close();
+  outputFile.close();
 
   return 0;
 }
