@@ -91,19 +91,19 @@ int main() {
   string s;
 
   // getting values from user
-  // cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
-  // cin >> s;
-  // while (!calc.checkValidValues(s)) { // throw invalid expression error
-  //   cout << "Invalid syntax. Try again: \n";
-  //   cin >> s;
-  // }
-  // string result;
-  // try {
-  //   result = to_string(calc.run(s));
-  // } catch (const char* msg) {
-  //   cout << "-> Error message: " << msg;
-  // }
-  // cout << fixed << setprecision(3) << result << endl;
+  cout << "Enter an expression in format: a+b, a-b, a*b, a/b, a^b, ra (sqrt of a)\n";
+  cin >> s;
+  while (!calc.checkValidValues(s)) { // throw invalid expression error
+    cout << "Invalid syntax. Try again: \n";
+    cin >> s;
+  }
+  string result;
+  try {
+    result = to_string(calc.run(s));
+  } catch (const char* msg) {
+    cout << "-> Error message: " << msg;
+  }
+  cout << fixed << setprecision(3) << result << endl;
 
   // processing values from input file
   ifstream inputFile;
